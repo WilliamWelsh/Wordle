@@ -25,9 +25,9 @@ namespace Wordle
         private DrawingOptions _drawingOptions;
 
         // Button Stuff
-        public bool _canIClickALetter = true;
-        public bool _canIPressEnter = false;
-        public bool _canIBackSpace = false;
+        public bool CanIClickALetter = true;
+        public bool CanIPressEnter = false;
+        public bool CanIPressBackspace = false;
 
         public int CurrentRow = 1;
 
@@ -50,6 +50,7 @@ namespace Wordle
 
             WORD_OF_THE_DAY = wordOfTheDay;
 
+            // Initialize ImageSharp stuff
             _font = SystemFonts.CreateFont("Arial", 32, FontStyle.Bold);
             _rendererOptions = new RendererOptions(_font);
             _drawingOptions = new DrawingOptions()
@@ -69,20 +70,23 @@ namespace Wordle
         {
             // Letter Buttons
             if (PlacedLetters.Count % 5 == 0 && PlacedLetters.Count / 5 == CurrentRow)
-                _canIClickALetter = false;
+                CanIClickALetter = false;
             else
-                _canIClickALetter = true;
+                CanIClickALetter = true;
 
             // Enter Button
             if (PlacedLetters.Count % 5 == 0 && PlacedLetters.Count / 5 == CurrentRow)
-                _canIPressEnter = true;
+                CanIPressEnter = true;
             else
-                _canIPressEnter = false;
+                CanIPressEnter = false;
 
             // Backspace Button
-            _canIBackSpace = CurrentGuessedWord != "";
+            CanIPressBackspace = CurrentGuessedWord != "";
         }
 
+        /// <summary>
+        /// Render the image, and then return the name of the file
+        /// </summary>
         public async Task<string> MakeImageAndReturnFileName()
         {
             using (var image = new Image<Rgba32>(353, 423, Colors.RgbaDarkGrey))

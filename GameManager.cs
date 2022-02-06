@@ -28,8 +28,6 @@ namespace Wordle
 
             _playersThatHaveAlreadyPlayedToday = JsonConvert.DeserializeObject<List<CompletedGame>>(File.ReadAllText("played_today.json"));
 
-            var random = new Random();
-
             WORD_OF_THE_DAY = File.ReadAllText("word_of_the_day.txt");
         }
 
@@ -217,6 +215,9 @@ namespace Wordle
             Games.Remove(game);
         }
 
+        /// <summary>
+        /// Remove the buttons, delete the game, display the results, and save the results
+        /// </summary>
         private async Task CompleteGame(SocketInteraction interaction, Game game, string description, bool didTheyLose)
         {
             var result = new StringBuilder().AppendLine($"Discord Wordle {(didTheyLose ? "X" : game.CurrentRow)}/6").AppendLine();
@@ -273,7 +274,7 @@ namespace Wordle
                     label = letter.ActualLetter,
                     custom_id = $"playletter-{letter.ActualLetter}",
                     row,
-                    disabled = !game._canIClickALetter ? true : false,
+                    disabled = !game.CanIClickALetter ? true : false,
                     style = letter.ButtonColor
                 };
 
@@ -303,7 +304,7 @@ namespace Wordle
                         label = "W",
                         custom_id = "playletter-W",
                         row = 4,
-                        disabled = !game._canIClickALetter ? true : false,
+                        disabled = !game.CanIClickALetter ? true : false,
                         style = 2
                     },
                     new
@@ -312,7 +313,7 @@ namespace Wordle
                         label = "Y",
                         custom_id = "playletter-Y",
                         row = 4,
-                        disabled = !game._canIClickALetter ? true : false,
+                        disabled = !game.CanIClickALetter ? true : false,
                         style = 2
                     },
                     new
@@ -321,7 +322,7 @@ namespace Wordle
                         label = "Backspace",
                         custom_id = "backspace",
                         row = 4,
-                        disabled = !game._canIBackSpace ? true : false,
+                        disabled = !game.CanIPressBackspace ? true : false,
                         style = 4
                     },
                     new
@@ -330,7 +331,7 @@ namespace Wordle
                         label = "Enter",
                         custom_id = "enter",
                         row = 4,
-                        disabled = !game._canIPressEnter ? true : false,
+                        disabled = !game.CanIPressEnter ? true : false,
                         style = 3
                     },
                     new
@@ -359,19 +360,10 @@ namespace Wordle
                         },
                         description = description,
                         color = Convert.ToInt32($"{color.R:X2}{color.G:X2}{color.B:X2}", 16).ToString(),
-                        image = new
-                        {
-                            url = $"attachment://{fileName}"
-                        }
+                        image = new {  url = $"attachment://{fileName}" }
                     }
                 },
-                attachments = new[]
-                {
-                    new
-                    {
-                        id = "0"
-                    }
-                },
+                attachments = new[] { new { id = "0" } },
                 components = removeButtons ? new dynamic[0] : components
             };
 

@@ -8,10 +8,7 @@ namespace Wordle
         public GameManager GameManager { get; set; }
 
         [SlashCommand("wordle", "Play wordle!")]
-        public async Task ShowHowToPlay()
-        {
-            await GameManager.ShowHowToPlay(Context.Interaction);
-        }
+        public async Task ShowHowToPlay() => await GameManager.ShowHowToPlay(Context.Interaction);
 
         [ComponentInteraction("start-game")]
         public async Task StartInitialGame() => await GameManager.StartGame((SocketMessageComponent)Context.Interaction);
