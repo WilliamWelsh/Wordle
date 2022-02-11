@@ -127,9 +127,10 @@ namespace Wordle
                     // Check if any other correct appearances of this letter are here
                     // I'm sure this can look better lol
                     var otherCorrectAppearance = false;
-                    for (int j = i; j < 5; j++)
-                        if (letters.ElementAt(j).ActualLetter == temp[j].ToString())
-                            otherCorrectAppearance = true;
+                    if (wordOfTheDay.Count(c => (c.ToString() == letter.ActualLetter)) > 2)
+                        for (int j = i; j < 5; j++)
+                            if (letters.ElementAt(j).ActualLetter == temp[j].ToString())
+                                otherCorrectAppearance = true;
 
                     if (otherCorrectAppearance)
                     {
