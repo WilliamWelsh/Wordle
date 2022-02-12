@@ -150,7 +150,9 @@ namespace Wordle
                     {
                         letter.UpdateLetter(LetterType.IncorrectSpot);
                         game.Letters.Where(x => x.ActualLetter == letter.ActualLetter).First().UpdateLetter(LetterType.IncorrectSpot);
-                        temp[i] = '_';
+
+                        if (!WORD_OF_THE_DAY.Contains(temp[i]))
+                            temp[i] = '_';
                     }
                 }
                 else
@@ -306,7 +308,7 @@ namespace Wordle
                         custom_id = "playletter-W",
                         row = 4,
                         disabled = !game.CanIClickALetter ? true : false,
-                        style = 2
+                        style = game.Letters.Where(l => l.ActualLetter == "W").First().ButtonColor
                     },
                     new
                     {
@@ -315,7 +317,7 @@ namespace Wordle
                         custom_id = "playletter-Y",
                         row = 4,
                         disabled = !game.CanIClickALetter ? true : false,
-                        style = 2
+                        style = game.Letters.Where(l => l.ActualLetter == "Y").First().ButtonColor
                     },
                     new
                     {
